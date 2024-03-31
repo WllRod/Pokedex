@@ -3,16 +3,13 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import PokeCard from './PokeCard';
 
-
 const Body = () => {
     const [pokemons, setPokemons] = useState([])
-
     useEffect(() => {
         axios.get('https://pokeapi.co/api/v2/pokemon?limit=100')
             .then(q => setPokemons(q.data.results))
     }, [])
     
-
     return(
         <ScrollView style={style.container}>
             <View style={style.pokemons}>
@@ -20,7 +17,7 @@ const Body = () => {
                     pokemons.map((item, index) => {
                         
                         return(
-                            <PokeCard name={item.name} index={index} />
+                            <PokeCard name={item.name} key={index} />
                         )
                     })
                 }

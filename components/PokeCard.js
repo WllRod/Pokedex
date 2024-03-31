@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Button, ScrollView, Image, Pressable } from 'react-native';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-
+import { useNavigation } from '@react-navigation/native';
+import Animated from 'react-native-reanimated';
 const NomePokemon = (nome) => {
     let nomeSplited = nome.split('')
 
@@ -13,6 +14,7 @@ const NomePokemon = (nome) => {
 const PokeCard = props => {
 
     const [pokemonData, setPokemonData] = useState({})
+    const navigation = useNavigation()
 
     useEffect(() => {
         axios.get(`https://pokeapi.co/api/v2/pokemon/${props.name}/`)
@@ -21,7 +23,7 @@ const PokeCard = props => {
         
     }, [])
     return(
-        <Pressable key={`pokemon_${props.index}`} onPress={() => alert(props.name)}>
+        <Pressable key={`pokemon_${props.key}`} onPress={() => navigation.navigate("Details", { name: props.name })}>
             <View style={{backgroundColor: 'yellow', padding: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 100, height: 100, flexGrow: 1, flex: 1}}>
                 <Image 
                     source={{uri: `https://img.pokemondb.net/sprites/black-white/anim/normal/${props.name}.gif`}}
@@ -30,7 +32,7 @@ const PokeCard = props => {
 
                 {
                     pokemonData.types === undefined ? "" : pokemonData.types.map((item, index) => {
-                        return(<Text>{item.type.name}</Text>)
+                        return(<Text key={index}>{item.type.name}</Text>)
                     })
                 }
                 
